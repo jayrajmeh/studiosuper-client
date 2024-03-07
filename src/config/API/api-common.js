@@ -1,0 +1,10 @@
+// export const protocol = "https";
+// export const host = "api.harcoskepzoapp.hu";
+// export const host = "development.api.harcoskepzoapp.hu";
+// export const port = "";
+// export const trailUrl = "";
+export const protocol = "http";
+// // export const host = "api.harcoskepzoapp.hu";
+export const host = "localhost";
+export const port = "8002";
+export const trailUrl = "";

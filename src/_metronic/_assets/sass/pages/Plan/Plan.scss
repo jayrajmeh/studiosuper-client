@@ -1,0 +1,148 @@
+.plan-details {
+  .slider-img {
+    height: 200px;
+  }
+  .embed-responsive-item {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+  }
+  .previousBtn0,
+  .previousBtn1,
+  .previousBtn2,
+  .previousBtn3,
+  .previousBtn4,
+  .previousBtn5,
+  .previousBtn6 {
+    background-color: white;
+    z-index: 1;
+    position: absolute;
+    top: 44%;
+    left: -25px;
+    border-radius: 25%;
+    height: 40px;
+    width: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 10px grey;
+    cursor: pointer;
+  }
+  .nextBtn0,
+  .nextBtn1,
+  .nextBtn2,
+  .nextBtn3,
+  .nextBtn4,
+  .nextBtn5,
+  .nextBtn6 {
+    display: block;
+    position: absolute;
+    top: 44%;
+    right: -10px;
+    background-color: white;
+    z-index: 1;
+    border-radius: 25%;
+    height: 40px;
+    width: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 10px grey;
+    cursor: pointer;
+  }
+  .disabledBtn {
+    display: none !important;
+  }
+}
+
+.add-plan-modal {
+  .sidebarTitle {
+    font-size: 15px;
+    font-weight: 500;
+  }
+  .subTitle {
+    color: grey;
+  }
+  .modal-content {
+    max-height: 700px;
+  }
+  .side-arrow {
+    position: relative;
+    &::after {
+      content: "";
+      position: absolute;
+      right: -10px;
+      top: 20px;
+      height: 20px;
+      width: 20px;
+      background: #f1faff;
+      rotate: 44deg;
+    }
+  }
+}
+.add-plan-modal2 {
+  .sidebarTitle {
+    font-size: 15px;
+    font-weight: 500;
+  }
+  .subTitle {
+    color: grey;
+  }
+  .modal-content {
+    max-height: 100%;
+  }
+  .side-arrow {
+    position: relative;
+    &::after {
+      content: "";
+      position: absolute;
+      right: -10px;
+      top: 20px;
+      height: 20px;
+      width: 20px;
+      background: #f1faff;
+      rotate: 44deg;
+    }
+  }
+}
+.plan-add {
+  .ant-space-item:first-child {
+    width: 100%;
+    margin-left: 13px;
+  }
+}
+@media (min-width: 576px) {
+  .add-plan-modal .modal-dialog {
+    max-width: 576px !important;
+
+  }
+  .add-plan-modal2 .modal-dialog {
+    max-width: 476px !important;
+
+  }
+
+}
+@media (min-width: 768px) {
+  .add-plan-modal .modal-dialog {
+    max-width: 768px !important;
+  }
+  .add-plan-modal2 .modal-dialog {
+    max-width: 668px !important;
+  }
+}
+@media (min-width: 992px) {
+  .add-plan-modal .modal-dialog {
+    max-width: 992px !important;
+  }
+  .add-plan-modal2 .modal-dialog {
+    max-width: 892px !important;
+  }
+}
+@media (min-width: 1300px) {
+  .add-plan-modal .modal-dialog {
+    max-width: 1300px !important;
+  }
+  .add-plan-modal2 .modal-dialog {
+    max-width: 1000px !important;
+  }
+}
