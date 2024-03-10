@@ -107,50 +107,7 @@ export function AsideMenuList({ layoutProps }) {
             <span className="menu-text">{lan.sidelist_school}</span>
           </NavLink>
         </li>
-        <li
-          className={`menu-item ${getMenuItemActive("/expense_list", false)}`}
-          aria-haspopup="true"
-        >
-          <NavLink className="menu-link" to="/expense_list">
-            <span className="svg-icon menu-icon">
-              <SVG src={toAbsoluteUrl("/media/svg/icons/General/User.svg")} />
-            </span>
-            <span className="menu-text">{lan.sidelist_expense}</span>
-          </NavLink>
-        </li>
-        <li
-          className={`menu-item ${getMenuItemActive("/inventory_list", false)}`}
-          aria-haspopup="true"
-        >
-          <NavLink className="menu-link" to="/inventory_list">
-            <span className="svg-icon menu-icon">
-              <SVG src={toAbsoluteUrl("/media/svg/icons/General/User.svg")} />
-            </span>
-            <span className="menu-text">{lan.sidelist_inventory}</span>
-          </NavLink>
-        </li>
-        <li
-          className={`menu-item ${getMenuItemActive("/balancebook_list", false)}`}
-          aria-haspopup="true"
-        >
-          <NavLink className="menu-link" to="/balancebook_list">
-            <span className="svg-icon menu-icon">
-              <SVG src={toAbsoluteUrl("/media/svg/icons/General/User.svg")} />
-            </span>
-            <span className="menu-text">{lan.sidelist_balancebook}</span>
-          </NavLink>
-        </li>
-        <li
-          className={`menu-item ${getMenuItemActive("/kapan_list", false)}`}
-          aria-haspopup="true"
-        >
-          <NavLink className="menu-link" to="/kapan_list">
-            <span className="svg-icon menu-icon">
-              <SVG src={toAbsoluteUrl("/media/svg/icons/General/User.svg")} />
-            </span>
-            <span className="menu-text">{lan.sidelist_kapan}</span>
-          </NavLink>
-        </li>
+       
         
         <li
           className={`menu-item ${getMenuItemActive("", false)}`}

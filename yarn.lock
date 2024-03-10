@@ -11182,7 +11182,7 @@
   dependencies:
     "side-channel" "^1.0.4"
 
-"query-string@^4.1.0":
+"query-string@^4.1.0", "query-string@^4.3.4":
   "integrity" "sha512-O2XLNDBIg1DnTOa+2XrIwSiXEV8h2KImXUnjhhn2+UsvZ+Es2uyd5CCRTNQlDGbzUQOW3aYCBx9rVA6dzsiY7Q=="
   "resolved" "https://registry.npmjs.org/query-string/-/query-string-4.3.4.tgz"
   "version" "4.3.4"

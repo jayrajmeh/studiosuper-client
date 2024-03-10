@@ -1,6 +1,8 @@
 {
   "sidelist_dashboard": "ડેશબોર્ડ",
   "sidelist_school": "પક્ષકાર",
+  "sidelist_student": "Student",
+  "sidelist_class": "Class",
   "sidelist_expense": "ખર્ચ",
   "sidelist_inventory": "રફમાલ",
   "sidelist_balancebook": "બેલેન્સબુક",

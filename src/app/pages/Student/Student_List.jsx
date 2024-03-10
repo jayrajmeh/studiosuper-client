@@ -10,8 +10,10 @@ import Pagination from "@material-ui/lab/Pagination";
 import { useLanguage } from '../../../_metronic/i18n/LanguageContext';
 import { toAbsoluteUrl } from "../../../_metronic/_helpers";
 import SVG from "react-inlinesvg";
-import Category_Edit from "./School_Edit";
+import Student_Edit from "./Student_Edit";
 import { Modal } from "react-bootstrap";
+import queryString from "query-string";
+
 
 
 
@@ -25,6 +27,10 @@ function UserList() {
   const [pagesize, setpagesize] = useState(10);
   const [searching, setsearching] = useState("");
   const [rowID, setRowID] = React.useState();
+  const [schoolid, setschoolid] = React.useState();
+  const [mainschoolid, setmainschoolid] = React.useState();
+
+
   const [open, setOpen] = React.useState(false);
   const [state, setState] = React.useState(true);
   const [modal, setModal] = React.useState(false);
@@ -33,6 +39,22 @@ function UserList() {
 
   const columns = [
     {
+      dataField: "phonenumber",
+      text: "Phonenumber",
+      sort: true,
+      formatter: (cell, row) => {
+        return <div>{cell ? cell : "-"}</div>;
+      },
+    },
+    {
+      dataField: "mobile",
+      text: "Mobile",
+      sort: true,
+      formatter: (cell, row) => {
+        return <div>{cell ? cell : "-"}</div>;
+      },
+    },
+    {
       dataField: "name",
       text: lan.name,
       sort: true,
@@ -40,23 +62,48 @@ function UserList() {
         return <div>{cell ? cell : "-"}</div>;
       },
     },
+   
     {
-      dataField: "phonenumber",
-      text: lan.phonenumber,
+      dataField: "address",
+      text: "address",
+      sort: true,
+      formatter: (cell, row) => {
+        return <div>{cell ? cell : "-"}</div>;
+      },
+    },
+    {
+      dataField: "city",
+      text: "city",
+      sort: true,
+      formatter: (cell, row) => {
+        return <div>{cell ? cell : "-"}</div>;
+      },
+    },
+    {
+      dataField: "dateofbirth",
+      text: "dateofbirth",
+      sort: true,
+      formatter: (cell, row) => {
+        return <div>{cell ? cell : "-"}</div>;
+      },
+    },
+    {
+      dataField: "photonumber",
+      text: "photonumber",
+      sort: true,
+      formatter: (cell, row) => {
+        return <div>{cell ? cell : "-"}</div>;
+      },
+    },
+    {
+      dataField: "photo",
+      text: "photo",
       sort: true,
       formatter: (cell, row) => {
         return <div>{cell ? cell : "-"}</div>;
       },
     },
     
-    {
-      dataField: "address",
-      text: lan.address,
-      sort: true,
-      formatter: (cell, row) => {
-        return <div>{cell ? cell : "-"}</div>;
-      },
-    },
     
     {
       dataField: "action",
@@ -69,7 +116,7 @@ function UserList() {
       formatter: (cell, row) => {
         return (
           <div className="d-flex justify-content-center">
-            <a
+            {/* <a
               title="Edit customer"
               className="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
               onClick={() => click(row)}
@@ -81,7 +128,7 @@ function UserList() {
                   )}
                 />
               </span>
-            </a>
+            </a> */}
             <> </>
 
             <a
@@ -98,19 +145,7 @@ function UserList() {
             </a>
             <> </>
 
-            <a
-              title="View class"
-              className="btn btn-icon btn-light btn-hover-danger btn-sm"
-            // onClick={() => openDeleteCustomerDialog(row.id)}
-            >
-              <span className="svg-icon svg-icon-md svg-icon-success"> 
-    <SVG
-      src={toAbsoluteUrl("/media/svg/icons/General/Visible.svg")} 
-      onClick={() => onView(row._id)}
-      style={{ fill: 'green' }} 
-    />
-  </span>
-            </a>
+            
 
            
 
@@ -129,7 +164,7 @@ function UserList() {
 
   const onView = (classId) => {
     // Assuming you have a route like '/customer/:customerId' for viewing customer details
-    history.push(`/class_list?id=${classId}`);
+    history.push(`/student/${classId}`);
   };
 
   const deleted = (v) => {
@@ -144,7 +179,7 @@ function UserList() {
   };
 
   const deleteTheory = (v) => {
-    ApiDelete("/school/" + v)
+    ApiDelete("/student/" + v)
       .then((res) => {
         SuccessToast(lan.successfull_deleted);
         setData(
@@ -171,28 +206,73 @@ function UserList() {
     fetchData(currentpage, pagesize, e.target.value);
   };
   const fetchData = async (page, limit, search) => {
+    let queries = queryString.parse(window.location.search);
+    console.log(queries)
     let body = {
       page,
       limit,
       search,
+      classid:queries.id
     };
-    await ApiPost("/school/get", body)
+    // if(queries.id) {
+      // body.schoolid = queries.id
+      setschoolid(queries.id)
+      setmainschoolid(queries.schoolid)
+
+    // }
+    await ApiPost("/student/get", body)
       .then((res) => {
         console.log("resData", res?.data);
-        setData(res?.data?.data?.school_count);
+        setData(res?.data?.data?.student_count);
         settotalpage(res?.data?.data?.state?.page_limit);
       })
       .catch((err) => ErrorToast(err?.message));
   };
   console.log("data", data);
   useEffect(() => {
+    let queries = queryString.parse(window.location.search);
+      console.log(queries)
     fetchData(currentpage, pagesize, searching);
   }, []);
+
+  const AddExcel = () => {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.xlsx'; // specify accepted file types if needed
+
+    input.click();
+
+    input.addEventListener('change', (event) => {
+        const file = event.target.files[0];
+        console.log(file)
+        if (file) {
+            const formData = new FormData();
+            formData.append('excel', file);
+            formData.append('class', schoolid);
+            formData.append('school', mainschoolid);
+
+
+            ApiPost("/student", formData)
+          .then((res) => {
+            console.log("ressssssssssss", res);
+            SuccessToast(lan.successfull_added);
+            fetchData(currentpage, pagesize);
+            
+          })
+          .catch(async (err) => {
+              ErrorToast(err.message);
+             
+            
+          });
+        }
+    });
+};
+
   return (
     <>
       <div className="d-flex justify-content-between mb-4">
         <div className="title">
-          <div className="fs-20px fw-bolder">{lan.sidelist_school}</div>
+          <div className="fs-20px fw-bolder">{lan.sidelist_student}</div>
           <div>
             <span
               role="button"
@@ -204,7 +284,7 @@ function UserList() {
             -{" "}
             <span className="text-muted" role="button">
               {" "}
-              {lan.sidelist_school}
+              {lan.sidelist_student}
             </span>
           </div>
         </div>
@@ -215,18 +295,27 @@ function UserList() {
         <div class="card-header flex-wrap border-0 pt-6 pb-0">
             <div class="card-title">
               <h3 class="card-label">
-              {lan.sidelist_school} {lan.list}
+              {lan.sidelist_student} {lan.list}
               </h3>
             </div>
             <div class="card-toolbar">
               <a
                 class="btn btn-primary font-weight-bolder"
-                onClick={() => openModal()}
+                onClick={() => AddExcel()}
               >
-                {lan.add} {lan.sidelist_school}
+                Add Excel
 
               </a>
             </div>
+            {/* <div class="card-toolbar">
+              <a
+                class="btn btn-primary font-weight-bolder"
+                onClick={() => openModal()}
+              >
+                {lan.add} {lan.sidelist_student}
+
+              </a>
+            </div> */}
           </div>
           <div className="card-body mb-5">
             <div class="row align-items-center">
@@ -290,10 +379,11 @@ function UserList() {
               </div>
             </div>
             {open && (
-                <Category_Edit
+                <Student_Edit
                   open={open}
                   setOpen={setOpen}
                   rowID={rowID}
+                  schoolid={schoolid}
                   setRowID={setRowID}
                   fetchDatas={fetchData}
                   currentpage={currentpage}
@@ -312,12 +402,12 @@ function UserList() {
           >
             <Modal.Header closeButton>
               <Modal.Title id="example-modal-sizes-title-lg">
-                {lan.delete} {lan.sidelist_school}
+                {lan.delete} {lan.sidelist_student}
               </Modal.Title>
             </Modal.Header>
             <Modal.Body>
               <span>
-                {lan.are_you_sure} {lan.sidelist_school}?
+                {lan.are_you_sure} {lan.sidelist_student}?
               </span>
             </Modal.Body>
             <Modal.Footer>

@@ -1,6 +1,8 @@
 {
   "sidelist_dashboard": "Dashboard",
   "sidelist_school": "School",
+  "sidelist_student": "Student",
+  "sidelist_class": "Class",
   "sidelist_expense": "Expense",
   "sidelist_inventory": "Inventory",
   "sidelist_balancebook": "Balancebook",
