@@ -59,6 +59,7 @@ const Category_Edit = ({ rowID, setRowID, open, setOpen, fetchDatas, currentpage
 		name: "",
 		phonenumber: "",
 		address: "",
+    validarray:[],
 	});
 
   const validateForm = () => {
@@ -115,6 +116,7 @@ console.log(formIsValid)
           name: newData.name,
           phonenumber: newData.phonenumber,
           address: newData.address,
+          validarray:newData.validarray,
         };
         console.log(body);
         ApiPut("/school", body)
@@ -148,6 +150,8 @@ console.log(formIsValid)
           name: newData.name,
           phonenumber: newData.phonenumber,
           address: newData.address,
+          validarray:newData.validarray,
+
         };
         console.log(body);
         ApiPost("/school", body)
@@ -170,8 +174,32 @@ console.log(formIsValid)
   };
 
   const handleChange = (e) => {
-		const { value, name } = e.target;
-		setNewData({ ...newData, [name]: value.trimStart() });
+		const { value, name ,checked} = e.target;
+    console.log(value, name ,checked)
+    if (["bloodgroup", "grno"].includes(name)) {
+      // Capitalize the first letter of each word
+      if (checked && (!newData || !newData.validarray?.includes(name))) {
+        // Add name to validArray if checked and not already present
+        setNewData(prevData => ({
+          ...prevData,
+          validarray: [...(prevData.validarray || []), name],
+        }));
+        console.log("a");
+      } else if (!checked && newData?.validarray?.includes(name)) {
+        // Remove name from validArray if unchecked and present
+        setNewData(prevData => ({
+          ...prevData,
+          validarray: prevData.validarray.filter(item => item !== name)
+        }));
+        console.log("b");
+      }
+    }else{
+      
+        setNewData({ ...newData, [name]: value.trimStart() });
+
+      
+
+    }
 	};
   useEffect(() => {
     console.log(rowID);
@@ -247,6 +275,28 @@ console.log(formIsValid)
 									{error["address"]}
 								</span>} */}
 						</Form.Group>
+            <Form.Group className="col-md-6">
+    <Form.Check
+      type="checkbox"
+      label="Blood Group"
+      name="bloodgroup"
+      onChange={handleChange}
+      checked={newData?.validarray?.includes("bloodgroup")}
+    />
+  </Form.Group>
+
+  <Form.Group className="col-md-6">
+    <Form.Check
+      type="checkbox"
+      label="GR Number"
+      name="grno"
+      onChange={handleChange}
+      checked={newData?.validarray?.includes("grno")}
+
+    />
+  </Form.Group>
+
+  
             </div>
         </Modal.Body>
         <Modal.Footer>

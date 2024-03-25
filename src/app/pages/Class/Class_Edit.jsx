@@ -57,6 +57,8 @@ const Category_Edit = ({ rowID, setRowID, open, setOpen, fetchDatas, currentpage
   const [validated, setValidated] = useState(false);
   const [newData, setNewData] = useState({
 		name: "",
+    isedit:false
+
 	});
 
   const validateForm = () => {
@@ -111,7 +113,9 @@ console.log(formIsValid)
         const body = {
           id: newData?._id,
           name: newData.name,
-          school: schoolid
+          school: schoolid,
+          isedit:newData.isedit
+
         };
         console.log(body);
         ApiPut("/class", body)
@@ -143,7 +147,9 @@ console.log(formIsValid)
       try {
         const body = {
           name: newData.name,
-          school: schoolid
+          school: schoolid,
+          isedit:newData.isedit
+
         };
         console.log(body);
         ApiPost("/class", body)
@@ -166,8 +172,14 @@ console.log(formIsValid)
   };
 
   const handleChange = (e) => {
-		const { value, name } = e.target;
-		setNewData({ ...newData, [name]: value.trimStart() });
+		const { value, name ,checked} = e.target;
+		if(["isedit"].includes(name)){
+      setNewData({ ...newData, [name]: checked });
+
+    }else{
+      setNewData({ ...newData, [name]: value.trimStart() });
+
+    }
 	};
   useEffect(() => {
     console.log(rowID);
@@ -212,6 +224,16 @@ console.log(formIsValid)
 									{error["name"]}
 								</span>}
 						</Form.Group>
+            <Form.Group className="col-md-6">
+    <Form.Check
+      type="checkbox"
+      label="isEditOff"
+      name="isedit"
+      onChange={handleChange}
+      checked={newData?.isedit}
+
+    />
+  </Form.Group>
             
             
             </div>

@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useEffect } from "react";
 import BootstrapTable from "react-bootstrap-table-next";
 import { useHistory } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import NoDataTable from "../../../common/noDataTable";
-import { ApiDelete, ApiPost } from "../../../helpers/API/ApiData";
+import { ApiDelete, ApiPost, ApiPostInce, ApiPut, ApiUpload, Bucket } from "../../../helpers/API/ApiData";
 import { ErrorToast, SuccessToast } from "../../../helpers/Toast";
 import Pagination from "@material-ui/lab/Pagination";
 import { useLanguage } from '../../../_metronic/i18n/LanguageContext';
@@ -13,12 +13,15 @@ import SVG from "react-inlinesvg";
 import Student_Edit from "./Student_Edit";
 import { Modal } from "react-bootstrap";
 import queryString from "query-string";
+import * as XLSX from 'xlsx';
+import moment from 'moment';
 
 
 
 
 function UserList() {
   const { language } = useLanguage();
+  const fileInputRef = useRef(null);
   const lan = require(`../../../_metronic/i18n/messages/${language}.json`);
   const history = useHistory();
   const [data, setData] = useState([]);
@@ -47,22 +50,53 @@ function UserList() {
       },
     },
     {
-      dataField: "mobile",
-      text: "Mobile",
+      dataField: "grno",
+      text: "Gr No.",
       sort: true,
       formatter: (cell, row) => {
         return <div>{cell ? cell : "-"}</div>;
       },
     },
     {
-      dataField: "name",
-      text: lan.name,
+      dataField: "surname",
+      text: "Surname",
       sort: true,
       formatter: (cell, row) => {
         return <div>{cell ? cell : "-"}</div>;
       },
     },
-   
+    {
+      dataField: "studentname",
+      text: "Studentname",
+      sort: true,
+      formatter: (cell, row) => {
+        return <div>{cell ? cell : "-"}</div>;
+      },
+    },
+    {
+      dataField: "fathername",
+      text: "Fathername",
+      sort: true,
+      formatter: (cell, row) => {
+        return <div>{cell ? cell : "-"}</div>;
+      },
+    },
+    {
+      dataField: "mobile",
+      text: "Father Mobile",
+      sort: true,
+      formatter: (cell, row) => {
+        return <div>{cell ? cell : "-"}</div>;
+      },
+    },
+    {
+      dataField: "mobile2",
+      text: "Mother Mobile",
+      sort: true,
+      formatter: (cell, row) => {
+        return <div>{cell ? cell : "-"}</div>;
+      },
+    },
     {
       dataField: "address",
       text: "address",
@@ -72,16 +106,16 @@ function UserList() {
       },
     },
     {
-      dataField: "city",
-      text: "city",
+      dataField: "dateofbirth",
+      text: "dateofbirth",
       sort: true,
       formatter: (cell, row) => {
-        return <div>{cell ? cell : "-"}</div>;
+        return <div>{cell ? moment(cell).format('DD/MM/YYYY')  : "-"}</div>;
       },
     },
     {
-      dataField: "dateofbirth",
-      text: "dateofbirth",
+      dataField: "bloodgroup",
+      text: "Bloodgroup",
       sort: true,
       formatter: (cell, row) => {
         return <div>{cell ? cell : "-"}</div>;
@@ -100,7 +134,15 @@ function UserList() {
       text: "photo",
       sort: true,
       formatter: (cell, row) => {
-        return <div>{cell ? cell : "-"}</div>;
+        return <div>{cell ?<img src={Bucket+cell} height={50} width={50}  />: "-"}</div>;
+      },
+    },
+    {
+      dataField: "status",
+      text: "status",
+      sort: true,
+      formatter: (cell, row) => {
+        return <div>{cell==0?"PENDING":cell==1?"ADDED":cell==2?"VERIFY MODE":cell==3?"ERROR":cell==4?"SUCCESS":""}</div>;
       },
     },
     
@@ -129,6 +171,19 @@ function UserList() {
                 />
               </span>
             </a> */}
+            <a
+              title="Edit customer"
+              className="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
+              onClick={() => click(row)}
+            >
+              <span className="svg-icon svg-icon-md svg-icon-primary">
+                <SVG
+                  src={toAbsoluteUrl(
+                    "/media/svg/icons/Communication/Write.svg"
+                  )}
+                />
+              </span>
+            </a>
             <> </>
 
             <a
@@ -162,9 +217,74 @@ function UserList() {
     setRowID(v._id);
   };
 
+
   const onView = (classId) => {
     // Assuming you have a route like '/customer/:customerId' for viewing customer details
     history.push(`/student/${classId}`);
+  };
+
+  const generateExcel = () => {
+    console.log("ssss")
+    // Create a workbook
+    const wb = XLSX.utils.book_new();
+  
+    // Define headers
+    const headers = [
+      'Code',
+      'Name',
+      'Address',
+      'City',
+      'Mobile',
+      'E-mail',
+      'Photo',
+      'Division',
+      'Profile',
+      'Family Photo',
+      'Signature',
+      'Date of Birth',
+      'Blood Group',
+      'Status',
+      'BarCodeData',
+      'BarCode',
+      'QRCode',
+      'Authority Signature'
+
+      
+      // Add the remaining headers from your Excel sheet
+    ];
+  
+    // Map table data to match headers
+    const mappedData = data.map(item => [
+      item.grno,
+      item.surname+" "+item.studentname+" "+item.fathername,
+      item.address,
+      item.mobile2?`${item.mobile2?.slice(0, 5)}-${item.mobile2?.slice(5)}`:"",
+      item.mobile?`${item.mobile?.slice(0, 5)}-${item.mobile?.slice(5)}`:"",
+      item.photonumber,
+      "",
+      "",
+      "",
+      "",
+      "",
+      moment(item.dateofbirth).format('MM/DD/YYYY'),
+      item.bloodgroup,
+      "",
+      "",
+      "",
+      "",
+      "",
+    ]);
+
+    console.log(mappedData)
+  
+    // Create a worksheet
+    const ws = XLSX.utils.aoa_to_sheet([headers, ...mappedData]);
+  
+    // Add worksheet to the workbook
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+  
+    // Generate Excel file
+    XLSX.writeFile(wb, 'student_data.xlsx');
   };
 
   const deleted = (v) => {
@@ -234,6 +354,9 @@ function UserList() {
       console.log(queries)
     fetchData(currentpage, pagesize, searching);
   }, []);
+  const Upload = () =>{
+
+  }
 
   const AddExcel = () => {
     const input = document.createElement('input');
@@ -268,6 +391,57 @@ function UserList() {
     });
 };
 
+const handleButtonClick = () => {
+  fileInputRef.current.click();
+};
+
+const handleFileChange = async(event) => {
+  const files = event.target.files;
+  if (files.length === 0) {
+    return;
+  }
+  const uploadPromises = Array.from(files).map(async (file) => {
+    const formData = new FormData();
+    formData.append('image', file);
+
+    try {
+      ApiUpload("upload/compress_image/thumbnail", formData)
+          .then((res) => {
+            console.log("ressssssssssss", res);
+            let photonumber = file.name.split(".")[0]
+            let bodys = {
+              photonumber:photonumber,
+              photo:res.data.data.image,
+              class:schoolid
+            }
+            ApiPut("/update_photo", bodys)
+            .then((res) => {
+              console.log("ressssssssssss", res);
+            })
+            // SuccessToast(lan.successfull_added);
+            // fetchData(currentpage, pagesize);
+            
+          })
+          .catch(async (err) => {
+              ErrorToast(err.message);
+             
+            
+          });
+    } catch (error) {
+      console.error(`Error uploading file ${file.name}:`, error);
+    }
+  });
+
+  try {
+    await Promise.all(uploadPromises);
+    console.log('All files uploaded successfully');
+  } catch (error) {
+    console.error('Error uploading files:', error);
+  }
+  // Here you can upload the files to your server
+  console.log("Selected files:", files);
+};
+
   return (
     <>
       <div className="d-flex justify-content-between mb-4">
@@ -299,6 +473,29 @@ function UserList() {
               </h3>
             </div>
             <div class="card-toolbar">
+            <input
+        type="file"
+        accept="image/*"
+        multiple
+        ref={fileInputRef}
+        style={{ display: 'none' }}
+        onChange={handleFileChange}
+      />
+
+      <a
+                class="btn btn-primary font-weight-bolder"
+                onClick={() => handleButtonClick()}
+              >
+                Upload Images
+
+              </a>
+            <a
+                class="btn btn-primary font-weight-bolder"
+                onClick={() => generateExcel()}
+              >
+                Make Excel
+
+              </a>
               <a
                 class="btn btn-primary font-weight-bolder"
                 onClick={() => AddExcel()}
@@ -306,6 +503,7 @@ function UserList() {
                 Add Excel
 
               </a>
+             
             </div>
             {/* <div class="card-toolbar">
               <a

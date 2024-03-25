@@ -4,7 +4,7 @@ import CryptoJS from "crypto-js";
 import * as authUtil from "../../utils/auth.util";
 
 export const BaseURL = API.endpoint + "/";
-export const Bucket = "https://api.harcoskepzoapp.hu/";
+export const Bucket = "https://studiosuper.s3.ap-south-1.amazonaws.com/";
 const axios = require("axios").default;
 
 const defaultHeaders = {
