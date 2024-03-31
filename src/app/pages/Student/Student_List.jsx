@@ -223,7 +223,7 @@ function UserList() {
     history.push(`/student/${classId}`);
   };
 
-  const generateExcel = () => {
+  const generateExcel = async() => {
     console.log("ssss")
     // Create a workbook
     const wb = XLSX.utils.book_new();
@@ -252,21 +252,35 @@ function UserList() {
       
       // Add the remaining headers from your Excel sheet
     ];
+
+    let body = {
+      classid:schoolid
+    };
+    // if(queries.id)
+
+    // }
+    let data1
+    await ApiPost("/student/getall", body)
+      .then((res) => {
+        console.log("resData", res?.data);
+        data1 = res?.data?.data?.student_count
+        
+      })
   
     // Map table data to match headers
-    const mappedData = data.map(item => [
+    const mappedData = data1.map(item => [
       item.grno,
       item.surname+" "+item.studentname+" "+item.fathername,
       item.address,
-      item.mobile2?`${item.mobile2?.slice(0, 5)}-${item.mobile2?.slice(5)}`:"",
-      item.mobile?`${item.mobile?.slice(0, 5)}-${item.mobile?.slice(5)}`:"",
+      item.mobile2?`${item.mobile2?.slice(0, 5)+" "}${item.mobile2?.slice(5)}`:"",
+      item.mobile?`${item.mobile?.slice(0, 5)+" "}${item.mobile?.slice(5)}`:"",
       item.photonumber,
       "",
       "",
       "",
       "",
       "",
-      moment(item.dateofbirth).format('MM/DD/YYYY'),
+      moment(item.dateofbirth).format('DD/MM/YYYY'),
       item.bloodgroup,
       "",
       "",

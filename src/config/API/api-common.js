@@ -3,8 +3,8 @@
 // export const host = "development.api.harcoskepzoapp.hu";
 // export const port = "";
 // export const trailUrl = "";
-export const protocol = "http";
+export const protocol = "https";
 // // export const host = "api.harcoskepzoapp.hu";
-export const host = "192.168.2.10";
-export const port = "8002";
+export const host = "ssbackend.thrivemyinfo.com";
+export const port = "";
 export const trailUrl = "";
