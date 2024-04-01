@@ -253,22 +253,22 @@ function UserList() {
       // Add the remaining headers from your Excel sheet
     ];
 
-    let body = {
-      classid:schoolid
-    };
-    // if(queries.id)
+    // let body = {
+    //   classid:schoolid
+    // };
+    // // if(queries.id)
 
-    // }
-    let data1
-    await ApiPost("/student/getall", body)
-      .then((res) => {
-        console.log("resData", res?.data);
-        data1 = res?.data?.data?.student_count
+    // // }
+    // let data1
+    // await ApiPost("/student/getall", body)
+    //   .then((res) => {
+    //     console.log("resData", res?.data);
+    //     data1 = res?.data?.data?.student_count
         
-      })
+    //   })
   
     // Map table data to match headers
-    const mappedData = data1.map(item => [
+    const mappedData = data.map(item => [
       item.grno,
       item.surname+" "+item.studentname+" "+item.fathername,
       item.address,
@@ -586,6 +586,11 @@ const handleFileChange = async(event) => {
                     <option value={20}>20</option>
                     <option value={30}>30</option>
                     <option value={50}>50</option>
+                    <option value={50}>100</option>
+                    <option value={50}>150</option>
+                    <option value={50}>200</option>
+
+
                   </select>
                 </div>
               </div>
