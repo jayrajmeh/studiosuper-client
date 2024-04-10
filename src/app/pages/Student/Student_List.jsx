@@ -138,6 +138,14 @@ function UserList() {
       },
     },
     {
+      dataField: "reason",
+      text: "reason",
+      sort: true,
+      formatter: (cell, row) => {
+        return <div>{cell ? cell : "-"}</div>;
+      },
+    },
+    {
       dataField: "status",
       text: "status",
       sort: true,
